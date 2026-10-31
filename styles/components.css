@@ -1,0 +1,593 @@
+/* Components. Use semantic tokens only (see tokens.css). */
+
+/* ---- Icon ---- */
+.icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Panel: maze-style double border with a soft neon glow ---- */
+.panel {
+  background: var(--color-surface-raised);
+  border: 6px double var(--color-border);
+  box-shadow:
+    0 0 12px var(--color-glow),
+    inset 0 0 8px var(--color-glow);
+}
+
+/* ---- Button ---- */
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: var(--tap-min);
+  padding: var(--space-3) var(--space-5);
+  border: var(--border-width) solid var(--color-surface);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+  transition: transform var(--duration-fast) steps(2), box-shadow var(--duration-fast) steps(2);
+}
+
+/* The "press": the button drops onto its shadow. */
+.btn:active:not(:disabled) {
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 0 0 0 var(--color-shadow);
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  --btn-bg: var(--color-action-primary);
+  --btn-fg: var(--color-text-on-action);
+}
+
+.btn--secondary {
+  --btn-bg: var(--color-action-secondary);
+  --btn-fg: var(--color-text-on-action);
+}
+
+.btn--win {
+  --btn-bg: var(--color-action-win);
+  --btn-fg: var(--color-text-on-action);
+}
+
+.btn--danger {
+  --btn-bg: var(--color-action-danger);
+  --btn-fg: var(--color-text);
+}
+
+.btn--ghost {
+  border-color: var(--color-border);
+}
+
+.btn--lg {
+  min-height: 64px;
+  font-size: var(--text-md);
+}
+
+.btn--xl {
+  min-height: var(--tap-xl);
+  font-size: var(--text-lg);
+}
+
+.btn--xl .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.btn--sm {
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.btn--square {
+  padding: 0;
+  width: var(--tap-min);
+  flex: none;
+}
+
+/* ---- Icon button ---- */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  padding: 0;
+  flex: none;
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.icon-btn:active:not(:disabled) {
+  background: var(--color-border);
+}
+
+.icon-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.icon-btn--danger {
+  color: var(--color-action-danger);
+}
+
+.icon-btn--win {
+  color: var(--color-action-win);
+}
+
+.icon-btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---- Top bar ---- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--tap-min);
+}
+
+.topbar__title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: normal;
+  color: var(--color-highlight);
+}
+
+.topbar__title--small {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.topbar__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ---- Text field ---- */
+.field {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-body);
+  user-select: text;
+}
+
+.field::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-focus);
+}
+
+/* ---- Setup ---- */
+.add-player {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.roster {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2);
+}
+
+.roster__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+}
+
+.roster__item + .roster__item {
+  border-top: 2px dashed var(--color-border);
+}
+
+.roster__index {
+  width: 2.5ch;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.roster__item:first-child .roster__index {
+  color: var(--color-highlight);
+}
+
+.roster__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Bottom action area ---- */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-bottom: var(--shadow-offset);
+}
+
+/* ---- Settings ---- */
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.setting + .setting {
+  border-top: 2px dashed var(--color-border);
+}
+
+.setting__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.setting__text .hint {
+  font-size: 20px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.stepper__value {
+  min-width: 6ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--color-highlight);
+}
+
+.switch {
+  position: relative;
+  width: 64px;
+  height: 36px;
+  padding: 0;
+  flex: none;
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.switch__thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-text-muted);
+  transition: transform var(--duration-fast) steps(2);
+}
+
+.switch[aria-checked='true'] {
+  border-color: var(--color-action-primary);
+}
+
+.switch[aria-checked='true'] .switch__thumb {
+  transform: translateX(28px);
+  background: var(--color-action-primary);
+}
+
+/* ---- Game: Rotation strip ---- */
+.rotation {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--space-1);
+}
+
+.rotation__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  flex: none;
+  min-width: 72px;
+  padding: var(--space-2);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.rotation__item .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-action-win);
+}
+
+.rotation__name {
+  max-width: 10ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 20px;
+}
+
+.rotation__bank {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.rotation__item.is-current {
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 8px var(--color-highlight);
+}
+
+.rotation__item.is-current .rotation__name,
+.rotation__item.is-current .rotation__bank {
+  color: var(--color-highlight);
+}
+
+.rotation__item.is-out {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+/* ---- Game: current Turn ---- */
+.turn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.turn__label {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.turn__name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: var(--text-name);
+  font-weight: normal;
+  color: var(--color-highlight);
+}
+
+/* During the Handoff the name is the most important thing on screen. */
+.is-handoff .turn__name {
+  font-size: calc(var(--text-name) * 1.3);
+  animation: bob 1s steps(2) infinite;
+}
+
+.timer {
+  font-family: var(--font-display);
+  font-size: var(--text-timer);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-timer);
+  text-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+}
+
+.is-handoff .timer {
+  opacity: 0.6;
+}
+
+.timer.is-danger {
+  color: var(--color-timer-danger);
+}
+
+.timer.is-blinking {
+  animation: blink var(--duration-blink) steps(1) infinite;
+}
+
+.actions--game .btn--win {
+  align-self: stretch;
+}
+
+/* ---- Standings ---- */
+.standings {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2);
+}
+
+.standings__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+}
+
+.standings__item + .standings__item {
+  border-top: 2px dashed var(--color-border);
+}
+
+.standings__place {
+  width: 4ch;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.standings__name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.standings__item.is-first .standings__place,
+.standings__item.is-first .standings__name {
+  color: var(--color-highlight);
+}
+
+.standings__item.is-first .icon {
+  color: var(--color-action-win);
+}
+
+.standings__item.is-unranked {
+  opacity: 0.6;
+}
+
+.standings__note {
+  color: var(--color-text-muted);
+  font-size: 20px;
+}
+
+/* ---- Modal ---- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgb(0 0 0 / 0.8);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: 400px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: var(--space-5);
+  animation: pop var(--duration-fast) steps(2);
+}
+
+.modal__title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-highlight);
+  overflow-wrap: anywhere;
+}
+
+.modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.modal__actions--row {
+  flex-direction: row;
+}
+
+.modal__actions--row .btn {
+  flex: 1;
+}
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  /* Just below the top bar, so Pause and 🏆 stay reachable. */
+  top: calc(max(var(--space-4), env(safe-area-inset-top)) + var(--tap-min) + var(--space-2));
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: min(calc(100% - 2 * var(--space-4)), var(--content-max));
+  padding: var(--space-2) var(--space-3);
+  transform: translateX(-50%);
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+  animation: pop var(--duration-fast) steps(2);
+}
+
+.toast__message {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast--danger {
+  border-color: var(--color-timer-danger);
+  color: var(--color-timer-danger);
+}
+
+.toast--win {
+  border-color: var(--color-action-win);
+  color: var(--color-action-win);
+}
+
+/* ---- Confetti ---- */
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+/* ---- Animations (stepped, to feel pixel-y) ---- */
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(calc(-1 * var(--px-unit)));
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.9);
+  }
+}
+
+.toast {
+  animation-name: toast-in;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, -8px);
+  }
+}

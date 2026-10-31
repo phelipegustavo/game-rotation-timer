@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Pixel hourglass on a maze-blue frame. -->
+  <rect width="16" height="16" fill="#000000"/>
+  <path fill="#2121de" d="M1 1h14v1H1zM1 14h14v1H1zM1 2h1v12H1zM14 2h1v12h-1z"/>
+  <path fill="#ffe81f" d="M4 3h8v1H4zM4 12h8v1H4zM5 4h6v1H5zM5 11h6v1H5zM6 5h4v1H6zM7 6h2v1H7zM7 9h2v1H7zM6 10h4v1H6z"/>
+  <path fill="#ffb8ff" d="M7 7h2v2H7z"/>
+  <path fill="#00ffff" d="M6 4h4v1H6zM7 5h2v1H7zM6 11h4v1H6z"/>
+</svg>

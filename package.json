@@ -1,0 +1,11 @@
+{
+  "name": "game-rotation-timer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A pixel-art PWA turn timer for card games, where each Player spends from a personal Time Bank.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 8080"
+  }
+}
