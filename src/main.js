@@ -5,7 +5,7 @@ import { t } from './strings.js';
 import { formatClock } from './ui/dom.js';
 import { load, save, remove } from './platform/storage.js';
 import { sfx, unlockAudio, setSoundEnabled } from './platform/audio.js';
-import { vibrate } from './platform/haptics.js';
+import { vibrate, setVibrationEnabled } from './platform/haptics.js';
 import { keepScreenOn } from './platform/wake-lock.js';
 import { launchConfetti } from './ui/confetti.js';
 import { normalizeSettings, stepSetting } from './domain/settings.js';
@@ -45,6 +45,7 @@ const app = {
 };
 
 setSoundEnabled(app.settings.sound);
+setVibrationEnabled(app.settings.vibration);
 restoreGame();
 
 // ---------------------------------------------------------------------------
@@ -157,6 +158,8 @@ const actions = {
   },
   toggleSetting(key) {
     setSettings(normalizeSettings({ ...app.settings, [key]: !app.settings[key] }));
+    // Turning vibration on doubles as a test, so the player can feel whether it works.
+    if (key === 'vibration' && app.settings.vibration) vibrate('start');
     render();
   },
 
@@ -260,6 +263,7 @@ function setRoster(roster) {
 function setSettings(settings) {
   app.settings = settings;
   setSoundEnabled(settings.sound);
+  setVibrationEnabled(settings.vibration);
   save('settings', settings);
 }
 
@@ -335,10 +339,27 @@ document.addEventListener('visibilitychange', () => {
 
 // Browsers only allow audio after a user gesture.
 document.addEventListener('pointerdown', unlockAudio, { capture: true });
+
+// A light buzz on every button press; actions with their own pattern (Start, End Turn…)
+// override it, since a new vibrate() call replaces the one in progress.
+document.addEventListener(
+  'pointerdown',
+  (event) => {
+    if (event.target.closest('button:not(:disabled)')) vibrate('tap');
+  },
+  { capture: true },
+);
 document.addEventListener('keydown', unlockAudio, { capture: true });
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+
+  // When an updated service worker takes over, reload to pick up the new files, but only
+  // outside a Game, so nobody's Turn is interrupted (the update then applies on next launch).
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController && (app.screen === 'setup' || app.screen === 'settings')) location.reload();
+  });
 }
 
 render();

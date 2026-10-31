@@ -400,12 +400,25 @@
   animation: bob 1s steps(2) infinite;
 }
 
+/* The timer is an SVG pixel font (src/ui/pixel-clock.js) that fills the available width. */
 .timer {
-  font-family: var(--font-display);
-  font-size: var(--text-timer);
-  font-variant-numeric: tabular-nums;
+  width: 100%;
+  max-width: var(--timer-max-width);
   color: var(--color-timer);
-  text-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+}
+
+.timer svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.timer__digits {
+  fill: currentColor;
+}
+
+.timer__shadow {
+  fill: var(--color-shadow);
 }
 
 .is-handoff .timer {

@@ -28,6 +28,8 @@ export const t = Object.freeze({
   endOnFirstWin: 'Acabar no primeiro vencedor',
   allowOutOfTurnWins: 'Permitir vitória fora da vez',
   sound: 'Sons',
+  vibration: 'Vibração',
+  vibrationUnsupported: 'Este navegador não vibra',
   decrease: (label) => `Diminuir ${label}`,
   increase: (label) => `Aumentar ${label}`,
   back: 'Voltar',

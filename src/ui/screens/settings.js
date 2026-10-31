@@ -2,6 +2,7 @@ import { h, formatClock } from '../dom.js';
 import { icon } from '../icons.js';
 import { t } from '../../strings.js';
 import { SETTING_LIMITS } from '../../domain/settings.js';
+import { canVibrate } from '../../platform/haptics.js';
 
 function stepper(label, key, settings, actions, hint) {
   const value = settings[key];
@@ -40,12 +41,17 @@ function stepper(label, key, settings, actions, hint) {
   );
 }
 
-function toggle(label, key, settings, actions) {
+function toggle(label, key, settings, actions, hint) {
   const on = settings[key];
   return h(
     'div',
     { class: 'setting' },
-    h('span', { class: 'setting__label', id: `label-${key}` }, label),
+    h(
+      'div',
+      { class: 'setting__text' },
+      h('span', { class: 'setting__label', id: `label-${key}` }, label),
+      hint && h('span', { class: 'hint' }, hint),
+    ),
     h(
       'button',
       {
@@ -84,6 +90,7 @@ export function settingsScreen(app, actions) {
       toggle(t.endOnFirstWin, 'endOnFirstWin', settings, actions),
       toggle(t.allowOutOfTurnWins, 'allowOutOfTurnWins', settings, actions),
       toggle(t.sound, 'sound', settings, actions),
+      toggle(t.vibration, 'vibration', settings, actions, canVibrate() ? null : t.vibrationUnsupported),
     ),
   );
 }

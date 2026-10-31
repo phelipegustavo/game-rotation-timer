@@ -2,7 +2,7 @@
 // There is no build step (docs/adr/0002-no-build-step.md), so when you add, rename or change
 // a file, update PRECACHE and bump CACHE_VERSION.
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `rotation-timer-${CACHE_VERSION}`;
 
 const PRECACHE = [
@@ -32,6 +32,7 @@ const PRECACHE = [
   './src/ui/dom.js',
   './src/ui/icons.js',
   './src/ui/overlays.js',
+  './src/ui/pixel-clock.js',
   './src/ui/screens/game.js',
   './src/ui/screens/settings.js',
   './src/ui/screens/setup.js',
@@ -42,7 +43,8 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE))
+      // `cache: 'reload'` bypasses the HTTP cache, so a new version never precaches stale files.
+      .then((cache) => cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' }))))
       .then(() => self.skipWaiting()),
   );
 });

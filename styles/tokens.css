@@ -51,7 +51,7 @@
   --text-lg: 20px;
   --text-xl: 28px;
   --text-body: 24px; /* VT323 renders small; this reads like ~16px text */
-  --text-timer: clamp(48px, 17vw, 112px);
+  --timer-max-width: 480px;
   --text-name: clamp(20px, 7vw, 36px);
 
   --border-width: 4px;

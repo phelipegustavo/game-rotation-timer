@@ -15,6 +15,7 @@ export const DEFAULT_SETTINGS = Object.freeze({
   endOnFirstWin: false,
   allowOutOfTurnWins: false,
   sound: true,
+  vibration: true,
 });
 
 /** Snaps a value onto a range's step grid and clamps it to the range. */
@@ -34,6 +35,7 @@ export function normalizeSettings(input = {}) {
     allowOutOfTurnWins:
       typeof raw.allowOutOfTurnWins === 'boolean' ? raw.allowOutOfTurnWins : DEFAULT_SETTINGS.allowOutOfTurnWins,
     sound: typeof raw.sound === 'boolean' ? raw.sound : DEFAULT_SETTINGS.sound,
+    vibration: typeof raw.vibration === 'boolean' ? raw.vibration : DEFAULT_SETTINGS.vibration,
   };
 }
 
