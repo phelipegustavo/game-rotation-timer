@@ -49,8 +49,12 @@ The gap between one Turn ending and the next Player starting theirs, while the d
 _Avoid_: Idle, waiting, pause
 
 **Timeout**:
-The moment a Player's Time Bank reaches zero during their Turn; that Turn ends on the spot and play passes to the next Player.
+The moment a Player's Time Bank reaches zero during their Turn; that Turn ends on the spot, play passes to the next Player, and the Player gets a Skipped Turn.
 _Avoid_: Losing the turn, skip, overflow
+
+**Skipped Turn**:
+The penalty for a Timeout: the next time the Rotation reaches that Player, they are passed over and do not play that round.
+_Avoid_: Lost turn, penalty, ban
 
 **Refill**:
 The fixed amount of time credited to a Player's Time Bank after a Timeout; any part of it left unused stays in the bank like any other time.

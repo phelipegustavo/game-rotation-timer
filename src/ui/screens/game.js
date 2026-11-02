@@ -17,15 +17,19 @@ export function gameScreen(app, actions, now) {
     { class: 'rotation', 'aria-label': t.rotationLabel },
     game.players.map((p, index) => {
       const out = !isInRotation(game, index);
+      const skipping = !out && p.skipNext;
       return h(
         'li',
         {
-          class: ['rotation__item', index === current && 'is-current', out && 'is-out'].filter(Boolean).join(' '),
+          class: ['rotation__item', index === current && 'is-current', out && 'is-out', skipping && 'is-skipping']
+            .filter(Boolean)
+            .join(' '),
           'aria-current': index === current ? 'true' : null,
         },
         out && icon('trophy'),
         h('span', { class: 'rotation__name' }, p.name),
         !out && h('span', { class: 'rotation__bank', 'data-bank': String(index) }, formatClock(bankAt(game, index, now))),
+        skipping && h('span', { class: 'rotation__skip' }, t.skipsNext),
       );
     }),
   );

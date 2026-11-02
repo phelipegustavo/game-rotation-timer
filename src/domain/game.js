@@ -1,11 +1,11 @@
-// Pure Game rules: Time Banks, Turns, Timeouts, Refills, the Rotation, Wins and Standings.
+// Pure Game rules: Time Banks, Turns, Timeouts, Refills, Skipped Turns, the Rotation, Wins and Standings.
 //
 // Every function takes a state and returns a new state (or the same object when nothing
 // changed). Nothing here touches the DOM or reads the clock: callers pass `now` (ms) in.
 // See GLOSSARY.md for the vocabulary.
 
 /**
- * @typedef {{ name: string, bankMs: number }} Player
+ * @typedef {{ name: string, bankMs: number, skipNext: boolean }} Player
  * @typedef {{
  *   settings: { startingBankMs: number, refillMs: number, endOnFirstWin: boolean, allowOutOfTurnWins: boolean },
  *   players: Player[],
@@ -18,6 +18,7 @@
  *
  * `players` is in Rotation order; a Player is identified by their index in it.
  * `bankMs` is the bank as of the last time the clock stopped (or the Turn started).
+ * `skipNext` is set by a Timeout: the Player sits out their next Turn (a Skipped Turn).
  * `runningSince` is set while the current Player's clock is running.
  * `ranked` lists Player indices in Standings order (Wins, then a lone last Player).
  */
@@ -31,7 +32,7 @@ export function createGame(names, settings) {
       endOnFirstWin: settings.endOnFirstWin,
       allowOutOfTurnWins: settings.allowOutOfTurnWins,
     },
-    players: names.map((name) => ({ name, bankMs: settings.startingBankMs })),
+    players: names.map((name) => ({ name, bankMs: settings.startingBankMs, skipNext: false })),
     currentIndex: 0,
     runningSince: null,
     ranked: [],
@@ -84,19 +85,20 @@ export function pauseClock(state, now) {
 /** The current Player finishes their Turn; play moves to the next Player's Handoff. */
 export function endTurn(state, now) {
   if (state.finished || !isRunning(state)) return state;
-  const paused = pauseClock(state, now);
-  return { ...paused, currentIndex: nextIndex(paused) };
+  return advance(pauseClock(state, now));
 }
 
 /**
  * Applies a Timeout if the running bank has reached zero: the Turn ends, the Refill is
- * credited and play moves on. Returns the same state object when nothing happened.
+ * credited, the Player's next Turn is marked to be skipped and play moves on. Returns the
+ * same state object when nothing happened.
  */
 export function tick(state, now) {
   if (state.finished || !isRunning(state)) return state;
   if (bankAt(state, state.currentIndex, now) > 0) return state;
-  const refilled = { ...withBank(state, state.currentIndex, state.settings.refillMs), runningSince: null };
-  return { ...refilled, currentIndex: nextIndex(refilled) };
+  const index = state.currentIndex;
+  const refilled = withPlayer(state, index, { bankMs: state.settings.refillMs, skipNext: true });
+  return advance({ ...refilled, runningSince: null });
 }
 
 /** Whether `index` may declare a Win right now (current Player with the clock running, or an allowed Out-of-turn Win). */
@@ -114,7 +116,7 @@ export function declareWin(state, index, now) {
   if (!canWin(state, index)) return state;
   const paused = pauseClock(state, now);
   const won = { ...paused, ranked: [...paused.ranked, index] };
-  const advanced = index === state.currentIndex ? { ...won, currentIndex: nextIndex(won) } : won;
+  const advanced = index === state.currentIndex ? advance(won) : won;
   return finishIfDecided(advanced);
 }
 
@@ -140,7 +142,25 @@ function finishIfDecided(state) {
   return state;
 }
 
+/**
+ * Moves play to the next Player's Handoff, passing over anyone with a Skipped Turn pending
+ * (which uses it up). Ends since every pass clears one pending skip.
+ */
+function advance(state) {
+  let next = state;
+  let index = state.currentIndex;
+  for (;;) {
+    index = nextIndex(next, index);
+    if (!next.players[index].skipNext) return { ...next, currentIndex: index };
+    next = withPlayer(next, index, { skipNext: false });
+  }
+}
+
 function withBank(state, index, bankMs) {
-  const players = state.players.map((player, i) => (i === index ? { ...player, bankMs } : player));
+  return withPlayer(state, index, { bankMs });
+}
+
+function withPlayer(state, index, changes) {
+  const players = state.players.map((player, i) => (i === index ? { ...player, ...changes } : player));
   return { ...state, players };
 }

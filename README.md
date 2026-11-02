@@ -1,6 +1,6 @@
 # Rotation Timer
 
-A pixel-art PWA turn timer for card games. Each Player has a **Time Bank** that only drains during their own Turn. When it runs out they lose the rest of that Turn and get a **Refill**. The UI is in Brazilian Portuguese.
+A pixel-art PWA turn timer for card games. Each Player has a **Time Bank** that only drains during their own Turn. When it runs out they lose the rest of that Turn, get a **Refill**, and sit out their next Turn. The UI is in Brazilian Portuguese.
 
 - [`GLOSSARY.md`](./GLOSSARY.md): the domain language (Player, Time Bank, Timeout, Refill…)
 - [`docs/SPEC.md`](./docs/SPEC.md): screens, rules, feedback and design system

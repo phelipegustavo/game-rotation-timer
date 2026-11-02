@@ -2,7 +2,7 @@
 // There is no build step (docs/adr/0002-no-build-step.md), so when you add, rename or change
 // a file, update PRECACHE and bump CACHE_VERSION.
 
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `rotation-timer-${CACHE_VERSION}`;
 
 const PRECACHE = [

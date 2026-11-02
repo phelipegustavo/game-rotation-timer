@@ -362,6 +362,16 @@
   color: var(--color-highlight);
 }
 
+.rotation__skip {
+  font-size: 16px;
+  color: var(--color-timer-danger);
+  text-transform: uppercase;
+}
+
+.rotation__item.is-skipping {
+  border-color: var(--color-timer-danger);
+}
+
 .rotation__item.is-out {
   opacity: 0.5;
   border-style: dashed;

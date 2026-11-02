@@ -4,7 +4,7 @@ Terms in **bold** are defined in [`GLOSSARY.md`](../GLOSSARY.md). Architectural 
 
 ## Overview
 
-A PWA that shares one device around a card-game table. Each **Player** has a **Time Bank** that only drains during their own **Turn**. When a bank runs dry the Player hits a **Timeout**, loses the rest of that Turn, and gets a **Refill**.
+A PWA that shares one device around a card-game table. Each **Player** has a **Time Bank** that only drains during their own **Turn**. When a bank runs dry the Player hits a **Timeout**, loses the rest of that Turn, gets a **Refill**, and sits out their next Turn (a **Skipped Turn**).
 
 ## Screens
 
@@ -58,6 +58,7 @@ A PWA that shares one device around a card-game table. Each **Player** has a **T
 - Every Player starts the Game with the Starting Bank.
 - Only the current Player's bank drains, and only during a Turn: never during the Handoff, while paused, or while a modal is open.
 - **Timeout:** when the bank reaches 0:00 during a Turn, the Turn ends immediately, the Timeout sound and vibration fire, the Refill is credited, and play moves to the next Player's Handoff. Any unused Refill stays in the bank.
+- **Skipped Turn:** after a Timeout, the next time the Rotation reaches that Player they are passed over (play goes straight to the Player after them) and the skip is used up. Their bank does not change. With two Players, the other Player plays twice in a row. If several pending skips line up, each is used up in a single pass. Until it is used, the Rotation strip marks the Player with "Pula a vez".
 - **Warning:** with 5 s or less remaining, a beep plays every second (5, 4, 3, 2, 1) and the timer flashes red. This also applies during Refill time and when a Turn starts with under 5 s.
 
 ### Wins

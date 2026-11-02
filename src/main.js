@@ -306,7 +306,7 @@ function loop() {
   if (next !== app.game) {
     const name = app.game.players[app.game.currentIndex].name;
     setGame(next, now);
-    showToast(`${name}: ${t.timeout} +${formatClock(app.game.settings.refillMs)}`, { tone: 'danger' });
+    showToast(`${name}: ${t.timeout} +${formatClock(app.game.settings.refillMs)} · ${t.skipsNext}`, { tone: 'danger' });
     sfx.timeout();
     vibrate('timeout');
     render();

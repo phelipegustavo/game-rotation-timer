@@ -76,9 +76,51 @@ test('Timeout credits exactly the Refill even if detected late', () => {
   assert.equal(game.players[ANA].bankMs, 1 * MIN);
 });
 
+test('a Timeout makes the Player sit out their next Turn', () => {
+  let game = tick(startTurn(newGame(), 0), 10 * MIN); // Ana times out
+  assert.equal(game.players[ANA].skipNext, true);
+  for (const _ of [BRUNO, CARLA]) game = endTurn(startTurn(game, 0), 1_000);
+  game = endTurn(startTurn(game, 0), 1_000); // Davi ends: Ana is skipped
+  assert.equal(game.currentIndex, BRUNO);
+  assert.equal(game.players[ANA].skipNext, false);
+  assert.equal(game.players[ANA].bankMs, 1 * MIN, 'a Skipped Turn spends nothing');
+
+  // The round after, Ana plays again.
+  for (const _ of [BRUNO, CARLA, DAVI]) game = endTurn(startTurn(game, 0), 1_000);
+  assert.equal(game.currentIndex, ANA);
+});
+
+test('a Skipped Turn also applies after the previous Player wins', () => {
+  let game = newGame();
+  for (const _ of [ANA, BRUNO]) game = endTurn(startTurn(game, 0), 1_000);
+  game = tick(startTurn(game, 0), 10 * MIN); // Carla times out -> Davi
+  game = declareWin(startTurn(game, 0), DAVI, 1_000); // Davi wins -> Ana
+  game = endTurn(startTurn(game, 0), 1_000); // -> Bruno
+  game = endTurn(startTurn(game, 0), 1_000); // Carla is skipped -> Ana
+  assert.equal(game.currentIndex, ANA);
+});
+
+test('with two Players, a Timeout gives the other Player two Turns in a row', () => {
+  let game = createGame(['Ana', 'Bruno'], SETTINGS);
+  game = tick(startTurn(game, 0), 10 * MIN); // Ana times out -> Bruno
+  game = endTurn(startTurn(game, 0), 1_000); // Ana is skipped -> Bruno again
+  assert.equal(game.currentIndex, BRUNO);
+  game = endTurn(startTurn(game, 0), 1_000);
+  assert.equal(game.currentIndex, ANA);
+});
+
+test('Players whose Skipped Turns are all pending use them up in one pass', () => {
+  let game = createGame(['Ana', 'Bruno'], SETTINGS);
+  game = tick(startTurn(game, 0), 10 * MIN); // Ana times out -> Bruno
+  game = tick(startTurn(game, 0), 10 * MIN); // Bruno times out: both skip once -> Ana
+  assert.equal(game.currentIndex, ANA);
+  assert.deepEqual(game.players.map((p) => p.skipNext), [false, false]);
+});
+
 test('unused Refill stays in the bank', () => {
   let game = tick(startTurn(newGame(), 0), 10 * MIN); // Ana times out -> 1:00
   for (const _ of [BRUNO, CARLA, DAVI]) game = endTurn(startTurn(game, 0), 1_000);
+  for (const _ of [BRUNO, CARLA, DAVI]) game = endTurn(startTurn(game, 0), 1_000); // Ana sat out
   game = endTurn(startTurn(game, 0), 20_000); // Ana uses 20s of her Refill
   assert.equal(game.players[ANA].bankMs, 40_000);
 });

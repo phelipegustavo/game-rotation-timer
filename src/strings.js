@@ -24,7 +24,7 @@ export const t = Object.freeze({
   settings: 'Configurações',
   startingBank: 'Tempo de cada jogador',
   refill: 'Tempo ao estourar',
-  refillHint: 'Quem zerar o tempo perde a vez e recebe esse tempo',
+  refillHint: 'Quem zerar o tempo perde a próxima vez e recebe esse tempo',
   endOnFirstWin: 'Acabar no primeiro vencedor',
   allowOutOfTurnWins: 'Permitir vitória fora da vez',
   sound: 'Sons',
@@ -43,6 +43,7 @@ export const t = Object.freeze({
   pause: 'Pausar',
   outOfTurnWin: 'Alguém ganhou',
   timeout: 'Tempo esgotado!',
+  skipsNext: 'Pula a vez',
   undo: 'Desfazer',
   turnEnded: (name) => `Vez de ${name} finalizada`,
 
